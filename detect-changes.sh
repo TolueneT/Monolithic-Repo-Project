@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the list of changed directories under the monorepo root
-CHANGED_SERVICES=$(git diff --name-only origin/main...HEAD | \
+CHANGED_SERVICES=$(git diff --name-only origin/master...HEAD | \
   awk -F/ '/^service-/ {print $1}' | sort -u)
 
 # Create a JSON array for matrix generation
