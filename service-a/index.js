@@ -1,6 +1,5 @@
-// service-a/index.js
 function serviceA() {
-	console.log("Running Service A");
+	console.log("Running Service A - Now Updated!");
 }
 
 serviceA();
