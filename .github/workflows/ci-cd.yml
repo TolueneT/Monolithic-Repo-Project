@@ -1,0 +1,52 @@
+name: Monorepo CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - "service-*/**"
+  pull_request:
+    paths:
+      - "service-*/**"
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: git fetch origin main
+
+      - name: Detect changed services
+        run: |
+          bash ./detect-changes.sh
+
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          MATRIX=$(cat changed-services.json | jq -c .)
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  run-ci-cd:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.service }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: echo "Building ${{ matrix.service }}"
+
+      - name: Test
+        run: echo "Testing ${{ matrix.service }}"
+
+      - name: Deploy
+        run: echo "Deploying ${{ matrix.service }}"
