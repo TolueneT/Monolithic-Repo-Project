@@ -2,6 +2,8 @@ name: Monorepo CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - master
     paths:
       - "service-*/**"
   pull_request:
