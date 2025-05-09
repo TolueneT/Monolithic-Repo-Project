@@ -1,5 +1,1 @@
-function serviceA() {
-	console.log("Running Service A - Now Updated!");
-}
-
-serviceA();
+console.log('Hello from service-a');
