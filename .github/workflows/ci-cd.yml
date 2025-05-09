@@ -44,6 +44,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Skip if no changes
+        if: ${{ matrix.service == 'none' }}
+        run: echo "No services changed, skipping CI/CD..."
+
       - name: Build
         run: echo "Building ${{ matrix.service }}"
 
